@@ -17,7 +17,8 @@ const App = () => {
                </input>
               </form>
             </div>,
-      calculateToggle: <input type='checkbox' />
+      calculate: <input type='checkbox' />,
+      unknownValue: true
 
     },
 
@@ -31,7 +32,8 @@ const App = () => {
        </input>
       </form>
     </div>,
-      calculateToggle: <input type='checkbox' />
+      calculate: <input type='checkbox' />,
+      unknownValue: true
 
     },
 
@@ -45,7 +47,8 @@ const App = () => {
        </input>
       </form>
     </div>,
-      calculateToggle: <input type='checkbox' />
+      calculate: <input type='checkbox' />,
+      unknownValue: true
 
     },
 
@@ -59,7 +62,8 @@ const App = () => {
        </input>
       </form>
     </div>,
-      calculateToggle: <input type='checkbox' />
+      calculate: <input type='checkbox' />,
+      unknownValue: true
 
     },
 
@@ -73,16 +77,19 @@ const App = () => {
        </input>
       </form>
     </div>,
-      calculateToggle: <input type='checkbox' />
+      calculate: <input type='checkbox' />,
+      unknownValue: true
 
     },
   ])
 
-
+const toggleCalculate = (symbol) => {
+  console.log(symbol)
+}
   return (
     <div className = "container">
       <Header title = 'Decline Calculator'/>
-      <Parameters parameters = {parameters} />
+      <Parameters parameters = {parameters} onToggle={toggleCalculate} />
     </div>
   );
 }

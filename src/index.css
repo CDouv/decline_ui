@@ -82,7 +82,7 @@ body {
   cursor: pointer;
 }
 
-.calculateToggle {
+.calculate {
   display:inline-block;
   background: #f4f4f4;
   margin: 5px;
