@@ -11,14 +11,9 @@ const App = () => {
       text:'Initial Flow Rate',
       symbol:'qi',
       units:'bbl/d',
-      input:<div>
-              <form>
-                <input type='text'>
-               </input>
-              </form>
-            </div>,
-      calculate: <input type='checkbox' />,
-      unknownValue: true
+      input:0,
+      calculate: false,
+     
 
     },
 
@@ -26,14 +21,9 @@ const App = () => {
       text:'Final Flow Rate',
       symbol:'qf',
       units:'bbl/d',
-      input:<div>
-      <form>
-        <input type='text'>
-       </input>
-      </form>
-    </div>,
-      calculate: <input type='checkbox' />,
-      unknownValue: true
+      input:0,
+      calculate: false,
+     
 
     },
 
@@ -41,14 +31,9 @@ const App = () => {
       text:'Decline Rate',
       symbol:'d',
       units:'%/yr',
-      input:<div>
-      <form>
-        <input type='text'>
-       </input>
-      </form>
-    </div>,
-      calculate: <input type='checkbox' />,
-      unknownValue: true
+      input:0,
+      calculate: false,
+     
 
     },
 
@@ -56,14 +41,9 @@ const App = () => {
       text:'Segment Duration',
       symbol:'t',
       units:'years',
-      input:<div>
-      <form>
-        <input type='text'>
-       </input>
-      </form>
-    </div>,
-      calculate: <input type='checkbox' />,
-      unknownValue: true
+      input:0,
+      calculate: false,
+      
 
     },
 
@@ -71,20 +51,16 @@ const App = () => {
       text:'Segment Reserves',
       symbol:'np',
       units:'mbbl',
-      input:<div>
-      <form>
-        <input type='text'>
-       </input>
-      </form>
-    </div>,
-      calculate: <input type='checkbox' />,
-      unknownValue: true
+      input:0,
+      calculate: false,
 
     },
   ])
 
 const toggleCalculate = (symbol) => {
-  console.log(symbol)
+  setParameters(parameters.map((parameter) => parameter.symbol === symbol
+  ? {...parameter, calculate: !parameter.calculate} : parameter))
+
 }
   return (
     <div className = "container">

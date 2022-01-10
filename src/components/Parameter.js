@@ -1,29 +1,32 @@
 import { useState } from 'react'
+import Unknown from './inputs/Unknown'
+import Known from './inputs/Known'
 
 export const Parameter = ({parameter, onToggle}) => {
     
-
-    const [param, setParam] = useState('')
     const [calc,setCalcToggle] = useState('')
 
-    //create a state for calculate or input value
+    //function to render input
+    const renderInput = () => {
+        if (parameter.calculate) {
+            return <Known />
+         } else {
+             return <Unknown />
+         }
+    }
 
     return (
         <div className = 'parameter'>
 
-            <div className = 'calculate' onClick={() => onToggle(parameter.symbol)}>
-            {parameter.calculate}
-            </div>
+            <input type='checkbox'  onClick={() => onToggle(parameter.symbol)}
+            />
 
             <div className = 'symbol'>
             {parameter.symbol}
             </div>
 
-            <div className = "input" value = {param} onChange={(e) =>
-            setParam(e.target.value)}
-            >
-            {parameter.input}
-            </div>
+            {renderInput()}
+
         </div>
     )
 }
