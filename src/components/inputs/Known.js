@@ -3,14 +3,26 @@ import { useState } from 'react'
 
 export const Known = (parameter) => {
     const [param, setParam] = useState('');
+    const [paramError,setParamError] = useState('false')
+
+    const validateParam = (val) => {
+        if (isNaN(val)) {
+            setParamError('true')
+        } else {
+            setParamError('false')
+        }
+
+        console.log(paramError);
+
+    }
 
     return (
-        <div className = "input">
+        <div className = { `${paramError ==='true' ? 'inputErr' : 'input'}`}>
         <form>
             <input 
                 type='text'
                 value = {param} 
-                onChange = {e => setParam(e.target.value)}
+                onChange = {e => {validateParam(e.target.value); setParam(e.target.value); }}
                 /> 
       </form>
 </div>

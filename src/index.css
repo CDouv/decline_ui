@@ -82,6 +82,14 @@ body {
   cursor: pointer;
 }
 
+.inputErr {
+  display:inline-block;
+  background: #f70303;
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
 .calculate {
   display:inline-block;
   background: #f4f4f4;
