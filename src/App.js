@@ -4,8 +4,25 @@ import Parameters from './components/Parameters'
 import './App.css';
 import { useState} from 'react'
 import { queries } from '@testing-library/react';
+const axios = require('axios').default;
+
 
 const App = () => {
+
+  // Test connecting to back-end
+  const getData = async () => {
+    const response = await axios({
+      method: 'get',
+      url: "http://localhost:8000/api/myrocket",
+      withCredentials: false,
+    });
+
+    console.log(response.data);
+
+  };
+
+  getData();
+
   const [parameters, setParameters] = useState([
     {
       text:'Initial Flow Rate',
