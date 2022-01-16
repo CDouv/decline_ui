@@ -2,14 +2,15 @@ import { useState } from 'react'
 import Unknown from './inputs/Unknown'
 import Known from './inputs/Known'
 
-export const Parameter = ({parameter, onToggle}) => {
+export const Parameter = ({parameter, onToggle, changeInput}) => {
     
-    const [calc,setCalcToggle] = useState('')
 
     //function to render input
     const renderInput = () => {
         if (parameter.calculate) {
-            return <Known />
+            return <Known parameter = {parameter}
+                          changeInput = {changeInput} 
+                          onToggle = {onToggle} />
          } else {
              return <Unknown />
          }

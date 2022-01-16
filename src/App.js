@@ -1,5 +1,6 @@
 import Header from './components/Header'
 import Parameters from './components/Parameters'
+import Calculate from './components/Calculate'
 
 import './App.css';
 import { useState} from 'react'
@@ -21,7 +22,7 @@ const App = () => {
 
   };
 
-  getData();
+  // getData();
 
   const [parameters, setParameters] = useState([
     {
@@ -74,15 +75,45 @@ const App = () => {
     },
   ])
 
+const exportParameters = () => {
+  let inputs = [];
+  parameters.map((parameter) => inputs.push(parameter.input));
+  let jsonInputs = {...inputs};
+
+  return jsonInputs
+}
+
+const countUnknowns = () => {
+  let knownsCount = 0;
+  let unknownsCount = 0;
+
+  parameters.map((parameter) =>parameter.calculate === true ?
+    knownsCount += 1 : unknownsCount += 1) 
+    
+  console.log(`There are ${knownsCount} knowns and ${unknownsCount} unknowns`);
+
+  return (knownsCount,unknownsCount)
+
+}
+
+
+console.log(exportParameters());
+
 const toggleCalculate = (symbol) => {
   setParameters(parameters.map((parameter) => parameter.symbol === symbol
   ? {...parameter, calculate: !parameter.calculate} : parameter))
-
 }
+const toggleChangeInput = (symbol,val) => {
+  setParameters(parameters.map((parameter) => parameter.symbol === symbol
+  ? {...parameter, input:val} : parameter))
+}
+
   return (
     <div className = "container">
       <Header title = 'Decline Calculator'/>
-      <Parameters parameters = {parameters} onToggle={toggleCalculate} />
+      <Parameters parameters = {parameters} onToggle={toggleCalculate}
+       changeInput = {toggleChangeInput} />
+       <Calculate countUnknowns = {countUnknowns}/>
     </div>
   );
 }
