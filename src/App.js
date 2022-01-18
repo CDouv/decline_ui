@@ -119,11 +119,20 @@ const toggleChangeInput = (symbol,val) => {
   ? {...parameter, input:val} : parameter))
 }
 
+const clearInput = (symbol) => {
+  setParameters(parameters.map((parameter) => (parameter.symbol === symbol) || (!parameter.calculate)
+  ? {...parameter,input:null} : parameter))
+}
+
+
   return (
     <div className = "container">
       <Header title = 'Decline Calculator'/>
-      <Parameters parameters = {parameters} onToggle={toggleCalculate}
-       changeInput = {toggleChangeInput} />
+      <Parameters 
+        parameters = {parameters}
+        onToggle={toggleCalculate}
+        changeInput = {toggleChangeInput}
+        clearInput = {clearInput} />
        <Calculate countUnknowns = {countUnknowns}/>
     </div>
   );

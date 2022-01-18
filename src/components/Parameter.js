@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Unknown from './inputs/Unknown'
 import Known from './inputs/Known'
 
-export const Parameter = ({parameter, onToggle, changeInput}) => {
+export const Parameter = ({parameter, onToggle, changeInput, clearInput}) => {
     
 
     //function to render input
@@ -12,15 +12,19 @@ export const Parameter = ({parameter, onToggle, changeInput}) => {
                           changeInput = {changeInput} 
                           onToggle = {onToggle} />
          } else {
+            //  clearInput(parameter.symbol);
              return <Unknown parameter = {parameter}
-                            changeInput = {changeInput} />
+                            changeInput = {changeInput}
+                            clearInput = {clearInput} />
          }
     }
 
     return (
         <div className = 'parameter'>
 
-            <input type='checkbox'  onClick={() => onToggle(parameter.symbol)}
+            <input type='checkbox'  onClick={() => {onToggle(parameter.symbol);
+                                                    // clearInput(parameter.symbol)
+                                                }}
             />
 
             <div className = 'symbol'>

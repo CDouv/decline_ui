@@ -1,6 +1,6 @@
 import Parameter from './Parameter'
 
-export const Parameters = ({parameters,onToggle,changeInput}) => {
+export const Parameters = ({parameters,onToggle,changeInput,clearInput}) => {
 
     return (
         <>
@@ -8,6 +8,9 @@ export const Parameters = ({parameters,onToggle,changeInput}) => {
             <Parameter parameter = {parameter}
             onToggle={onToggle}
             changeInput = {changeInput}
+            clearInput = {clearInput}
+
+
             />
         ))}
         </>
