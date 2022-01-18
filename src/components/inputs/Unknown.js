@@ -1,7 +1,8 @@
 //Will eventually use this component to talk to Rust and calculate unknown value
 import React from 'react'
 
-export const Unknown = () => {
+export const Unknown = ({parameter,changeInput}) => {
+
     return (
         <div className = "input">
                 <form>

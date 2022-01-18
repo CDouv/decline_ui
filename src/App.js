@@ -29,8 +29,9 @@ const App = () => {
       text:'Initial Flow Rate',
       symbol:'qi',
       units:'bbl/d',
-      input:0,
       calculate: false,
+      input:null,
+      
      
 
     },
@@ -39,8 +40,9 @@ const App = () => {
       text:'Final Flow Rate',
       symbol:'qf',
       units:'bbl/d',
-      input:0,
       calculate: false,
+      input:null,
+      
      
 
     },
@@ -49,8 +51,9 @@ const App = () => {
       text:'Decline Rate',
       symbol:'d',
       units:'%/yr',
-      input:0,
       calculate: false,
+      input:null,
+      
      
 
     },
@@ -59,8 +62,9 @@ const App = () => {
       text:'Segment Duration',
       symbol:'t',
       units:'years',
-      input:0,
       calculate: false,
+      input:null,
+      
       
 
     },
@@ -69,8 +73,9 @@ const App = () => {
       text:'Segment Reserves',
       symbol:'np',
       units:'mbbl',
-      input:0,
       calculate: false,
+      input:null,
+      
 
     },
   ])
@@ -100,9 +105,15 @@ const countUnknowns = () => {
 console.log(exportParameters());
 
 const toggleCalculate = (symbol) => {
-  setParameters(parameters.map((parameter) => parameter.symbol === symbol
-  ? {...parameter, calculate: !parameter.calculate} : parameter))
+  setParameters(parameters.map((parameter) => parameter.symbol === symbol 
+ 
+  ? {...parameter, calculate: !parameter.calculate} : parameter
+
+  
+  ));
+
 }
+
 const toggleChangeInput = (symbol,val) => {
   setParameters(parameters.map((parameter) => parameter.symbol === symbol
   ? {...parameter, input:val} : parameter))

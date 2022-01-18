@@ -12,7 +12,8 @@ export const Parameter = ({parameter, onToggle, changeInput}) => {
                           changeInput = {changeInput} 
                           onToggle = {onToggle} />
          } else {
-             return <Unknown />
+             return <Unknown parameter = {parameter}
+                            changeInput = {changeInput} />
          }
     }
 
