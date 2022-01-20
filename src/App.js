@@ -89,6 +89,7 @@ const App = () => {
     request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
     request.send(data);
     console.log(data);
+    console.log(typeof data);
     const response = await axios({
       method: "post",
       url: "http://localhost:8000/solve",
