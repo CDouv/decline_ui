@@ -54,7 +54,7 @@ const App = () => {
     // let inputs = [];
     // parameters.map((parameter) => inputs.push(parameter));
     // let jsonInputs = { ...inputs };
-    let jsonInputs = parameters[0];
+    let jsonInputs = parameters;
 
     return jsonInputs;
   };
@@ -74,14 +74,13 @@ const App = () => {
     return knownsCount, unknownsCount;
   };
 
-  let data = exportParameters();
-  data = JSON.stringify(data);
-  console.log(data);
-  console.log(typeof data);
-
   // Test connecting to back-end
 
   const sendJSON = async () => {
+    let data = exportParameters();
+    console.log(data);
+    data = JSON.stringify(data);
+
     let url = "http://localhost:8000/solve";
 
     var request = new XMLHttpRequest();
@@ -98,8 +97,6 @@ const App = () => {
 
     console.log(response.data);
   };
-
-  sendJSON();
 
   const toggleCalculate = (symbol) => {
     const newParameters = parameters.map((parameter) => {
@@ -145,7 +142,11 @@ const App = () => {
         changeInput={toggleChangeInput}
         clearInput={clearInput}
       />
-      <Calculate countUnknowns={countUnknowns} />
+      <Calculate
+        countUnknowns={countUnknowns}
+        exportParameters={exportParameters}
+        sendJSON={sendJSON}
+      />
     </div>
   );
 };
