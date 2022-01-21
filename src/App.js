@@ -50,51 +50,6 @@ const App = () => {
     },
   ]);
 
-  const exportParameters = () => {
-    let jsonInputs = parameters;
-
-    return jsonInputs;
-  };
-
-  const countUnknowns = () => {
-    let knownsCount = 0;
-    let unknownsCount = 0;
-
-    parameters.map((parameter) =>
-      parameter.calculate === true ? (knownsCount += 1) : (unknownsCount += 1)
-    );
-
-    console.log(
-      `There are ${knownsCount} knowns and ${unknownsCount} unknowns`
-    );
-
-    return knownsCount, unknownsCount;
-  };
-
-  // Test connecting to back-end
-
-  const sendJSON = async () => {
-    let data = exportParameters();
-    // console.log(data);
-    data = JSON.stringify(data);
-
-    let url = "http://localhost:8000/solve";
-
-    var request = new XMLHttpRequest();
-    request.open("POST", url, true);
-    request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
-    request.send(data);
-    // console.log(data);
-    // console.log(typeof data);
-    const response = await axios({
-      method: "post",
-      url: "http://localhost:8000/solve",
-      withCredentials: false,
-    });
-
-    console.log(response.data);
-  };
-
   const toggleCalculate = (symbol) => {
     const newParameters = parameters.map((parameter) => {
       if (parameter.symbol === symbol) {
@@ -119,6 +74,15 @@ const App = () => {
     );
   };
 
+  const updateInputs = (arr) => {
+    setParameters(
+      parameters.map((parameter, index) => ({
+        ...parameter,
+        input: arr[index],
+      }))
+    );
+  };
+
   const clearInput = (symbol) => {
     const newParameters = parameters.map((parameter) =>
       parameter.symbol === symbol && !parameter.calculate
@@ -128,6 +92,50 @@ const App = () => {
     console.log(newParameters);
 
     setParameters(newParameters);
+  };
+
+  const exportParameters = () => {
+    let jsonInputs = parameters;
+
+    return jsonInputs;
+  };
+
+  const countUnknowns = () => {
+    let knownsCount = 0;
+    let unknownsCount = 0;
+
+    parameters.map((parameter) =>
+      parameter.calculate === true ? (knownsCount += 1) : (unknownsCount += 1)
+    );
+
+    console.log(
+      `There are ${knownsCount} knowns and ${unknownsCount} unknowns`
+    );
+
+    return knownsCount, unknownsCount;
+  };
+
+  // Test connecting to back-end
+
+  const sendJSON = async () => {
+    let url = "http://localhost:8000/solve";
+    let data = exportParameters();
+    let config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    // console.log(data);
+    data = JSON.stringify(data);
+
+    try {
+      const resp = await axios.post(url, data, config);
+      console.log(resp.data);
+
+      updateInputs(resp.data.parameters);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
