@@ -51,9 +51,6 @@ const App = () => {
   ]);
 
   const exportParameters = () => {
-    // let inputs = [];
-    // parameters.map((parameter) => inputs.push(parameter));
-    // let jsonInputs = { ...inputs };
     let jsonInputs = parameters;
 
     return jsonInputs;
@@ -78,7 +75,7 @@ const App = () => {
 
   const sendJSON = async () => {
     let data = exportParameters();
-    console.log(data);
+    // console.log(data);
     data = JSON.stringify(data);
 
     let url = "http://localhost:8000/solve";
@@ -87,8 +84,8 @@ const App = () => {
     request.open("POST", url, true);
     request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
     request.send(data);
-    console.log(data);
-    console.log(typeof data);
+    // console.log(data);
+    // console.log(typeof data);
     const response = await axios({
       method: "post",
       url: "http://localhost:8000/solve",
