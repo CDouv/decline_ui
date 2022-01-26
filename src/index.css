@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap");
 
 * {
   box-sizing: border-box;
@@ -7,17 +7,22 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .container {
-  max-width: 500px;
+  max-width: 1000px;
   margin: 30px auto;
   overflow: auto;
   min-height: 300px;
   border: 1px solid steelblue;
   padding: 30px;
   border-radius: 5px;
+}
+
+.block_container {
+  display: flex;
+  flex-direction: row;
 }
 
 .header {
@@ -55,7 +60,7 @@ body {
 }
 
 .parameter {
-  display:inline-block;
+  display: inline-block;
   flex-direction: row;
   flex-wrap: wrap;
   background: #f4f4f4;
@@ -64,18 +69,17 @@ body {
   cursor: pointer;
 }
 
-
 .symbol {
-  display:inline-block;
-  height:30px;
-  width:30px;
-  font-size:x-large;
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  font-size: x-large;
   background: #f4f4f4;
   cursor: pointer;
 }
 
 .input {
-  display:inline-block;
+  display: inline-block;
   background: #f4f4f4;
   margin: 5px;
   padding: 10px 20px;
@@ -83,7 +87,7 @@ body {
 }
 
 .inputErr {
-  display:inline-block;
+  display: inline-block;
   background: #f70303;
   margin: 5px;
   padding: 10px 20px;
@@ -91,13 +95,12 @@ body {
 }
 
 .calculate {
-  display:inline-block;
+  display: inline-block;
   background: #f4f4f4;
   margin: 5px;
   padding: 0px 0px;
   cursor: pointer;
 }
-
 
 .add-form {
   margin-bottom: 40px;

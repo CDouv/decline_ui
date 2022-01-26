@@ -5,6 +5,7 @@ export const Parameters = ({
   onToggle,
   changeInput,
   clearInput,
+  segmentNumber,
 }) => {
   return (
     <>
@@ -15,6 +16,7 @@ export const Parameters = ({
           onToggle={onToggle}
           changeInput={changeInput}
           clearInput={clearInput}
+          segmentNumber={segmentNumber}
         />
       ))}
     </>

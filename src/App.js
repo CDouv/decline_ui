@@ -5,97 +5,77 @@ import Calculate from "./components/Calculate";
 import "./App.css";
 import { useState } from "react";
 import { queries } from "@testing-library/react";
+import { isCompositeComponent } from "react-dom/test-utils";
 const axios = require("axios").default;
 
 const App = () => {
-  const [parameters, setParameters] = useState([
+  const [segments, setSegments] = useState([
     {
-      text: "Initial Flow Rate",
-      symbol: "qi",
-      units: "bbl/d",
-      calculate: false,
-      input: null,
-    },
+      product: "oil",
+      segmentNumber: 1,
+      parameters: [
+        {
+          text: "Initial Flow Rate",
+          symbol: "qi",
+          units: "bbl/d",
+          calculate: false,
+          input: undefined,
+        },
 
-    {
-      text: "Final Flow Rate",
-      symbol: "qf",
-      units: "bbl/d",
-      calculate: false,
-      input: null,
-    },
+        {
+          text: "Final Flow Rate",
+          symbol: "qf",
+          units: "bbl/d",
+          calculate: false,
+          input: undefined,
+        },
 
-    {
-      text: "Decline Rate",
-      symbol: "d",
-      units: "%/yr",
-      calculate: false,
-      input: null,
-    },
+        {
+          text: "Decline Rate",
+          symbol: "d",
+          units: "%/yr",
+          calculate: false,
+          input: undefined,
+        },
 
-    {
-      text: "Segment Duration",
-      symbol: "t",
-      units: "years",
-      calculate: false,
-      input: null,
-    },
+        {
+          text: "Segment Duration",
+          symbol: "t",
+          units: "years",
+          calculate: false,
+          input: undefined,
+        },
 
-    {
-      text: "Segment Reserves",
-      symbol: "np",
-      units: "mbbl",
-      calculate: false,
-      input: null,
+        {
+          text: "Segment Reserves",
+          symbol: "np",
+          units: "mbbl",
+          calculate: false,
+          input: undefined,
+        },
+      ],
     },
   ]);
 
-  const toggleCalculate = (symbol) => {
-    const newParameters = parameters.map((parameter) => {
-      if (parameter.symbol === symbol) {
-        const newCalculate = !parameter.calculate;
-        if (newCalculate) {
-          return { ...parameter, calculate: newCalculate };
-        } else {
-          return { ...parameter, calculate: newCalculate, input: null };
-        }
-      } else {
-        return parameter;
-      }
-    });
-    setParameters(newParameters);
-  };
-
   const toggleChangeInput = (symbol, val) => {
-    setParameters(
-      parameters.map((parameter) =>
+    setSegments(
+      segments.map((parameter) =>
         parameter.symbol === symbol ? { ...parameter, input: val } : parameter
       )
     );
   };
 
   const updateInputs = (arr) => {
-    setParameters(
-      parameters.map((parameter, index) => ({
+    setSegments(
+      segments.map((parameter, index) => ({
         ...parameter,
         input: arr[index],
       }))
     );
   };
 
-  const clearInput = (symbol) => {
-    const newParameters = parameters.map((parameter) =>
-      parameter.symbol === symbol && !parameter.calculate
-        ? { ...parameter, input: null }
-        : parameter
-    );
-    console.log(newParameters);
-
-    setParameters(newParameters);
-  };
-
   const exportParameters = () => {
-    let jsonInputs = parameters;
+    let jsonInputs = segments;
 
     return jsonInputs;
   };
@@ -103,8 +83,11 @@ const App = () => {
   const countUnknowns = () => {
     let knownsCount = 0;
     let unknownsCount = 0;
+    let segmentNumber = 1;
+    //Determine parameters to reference
+    let params = [segments[segmentNumber - 1].parameters];
 
-    parameters.map((parameter) =>
+    params.map((parameter) =>
       parameter.calculate === true ? (knownsCount += 1) : (unknownsCount += 1)
     );
 
@@ -114,6 +97,55 @@ const App = () => {
 
     return knownsCount, unknownsCount;
   };
+
+  const toggleCalculate = (symbol) => {
+    let segmentNumber = 1;
+    //Determine parameters to reference
+    let params = segments[segmentNumber - 1].parameters;
+    //Copy parameter, change calculate field
+    let newParameters = params.map((parameter) => {
+      console.log("parameter", parameter);
+      if (parameter.symbol === symbol) {
+        const newCalculate = !parameter.calculate;
+        if (newCalculate) {
+          return { ...parameter, calculate: newCalculate, input: undefined };
+        } else {
+          return { ...parameter, calculate: newCalculate, input: undefined };
+        }
+      } else {
+        return parameter;
+      }
+    });
+
+    //Copy segments, add in new parameters
+    let newSegments = [{ ...segments }];
+    newSegments[segmentNumber - 1].parameters = newParameters;
+
+    //testing cloning
+
+    setSegments(newSegments);
+  };
+
+  // const copySegment = () => {
+  //   let currentSegment = segments[parameters.length - 1];
+
+  //   let addlSegment = _.cloneDeep(currentSegment);
+  //   addlSegment.segmentNumber = currentSegment.segmentNumber + 1;
+
+  //   //Loop through addlSegment, clear input values
+
+  //   addlSegment.parameters.map((parameter) => ({
+  //     ...parameter,
+  //     input: undefined,
+  //     calculate: false,
+  //   }));
+
+  //Add addlSegment to state
+
+  // setSegments((parameters) => [...parameters, addlSegment]);
+  // };
+
+  // copySegment();
 
   // Test connecting to back-end
 
@@ -142,11 +174,12 @@ const App = () => {
     <div className="container">
       <Header title="Decline Calculator" />
       <Parameters
-        parameters={parameters}
-        onToggle={toggleCalculate}
+        parameters={segments[0].parameters}
         changeInput={toggleChangeInput}
-        clearInput={clearInput}
+        onToggle={toggleCalculate}
+        segmentNumber={segments[0].segmentNumber}
       />
+
       <Calculate
         countUnknowns={countUnknowns}
         exportParameters={exportParameters}

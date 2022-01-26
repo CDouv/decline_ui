@@ -2,7 +2,13 @@ import { useState } from "react";
 import Unknown from "./inputs/Unknown";
 import Known from "./inputs/Known";
 
-export const Parameter = ({ parameter, onToggle, changeInput, clearInput }) => {
+export const Parameter = ({
+  parameter,
+  onToggle,
+  changeInput,
+  clearInput,
+  segmentNumber,
+}) => {
   //function to render input
   const renderInput = () => {
     if (parameter.calculate) {
@@ -14,7 +20,6 @@ export const Parameter = ({ parameter, onToggle, changeInput, clearInput }) => {
         />
       );
     } else {
-      //  clearInput(parameter.symbol);
       return (
         <Unknown
           parameter={parameter}
@@ -31,7 +36,6 @@ export const Parameter = ({ parameter, onToggle, changeInput, clearInput }) => {
         type="checkbox"
         onClick={() => {
           onToggle(parameter.symbol);
-          //    clearInput(parameter.symbol);
         }}
       />
 
