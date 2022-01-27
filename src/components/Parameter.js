@@ -16,7 +16,7 @@ export const Parameter = ({
         <Known
           parameter={parameter}
           changeInput={changeInput}
-          onToggle={onToggle}
+          segmentNumber={segmentNumber}
         />
       );
     } else {
@@ -35,7 +35,7 @@ export const Parameter = ({
       <input
         type="checkbox"
         onClick={() => {
-          onToggle(parameter.symbol);
+          onToggle(parameter.symbol, segmentNumber);
         }}
       />
 
