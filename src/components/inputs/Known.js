@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import Parameter from "../Parameter";
 
 export const Known = ({ parameter, segmentNumber, changeInput }) => {
   const [param, setParam] = useState("");
@@ -20,7 +21,7 @@ export const Known = ({ parameter, segmentNumber, changeInput }) => {
       <form>
         <input
           type="text"
-          value={param}
+          value={parameter.input}
           onChange={(e) => {
             validateParam(e.target.value);
             setParam(e.target.value);

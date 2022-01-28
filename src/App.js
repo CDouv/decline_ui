@@ -37,7 +37,7 @@ const App = () => {
         {
           text: "Decline Rate",
           symbol: "d",
-          units: "%/yr",
+          units: "nominal %/yr",
           calculate: false,
           input: undefined,
         },
@@ -70,37 +70,19 @@ const App = () => {
     );
   };
 
-  const exportParameters = () => {
-    let jsonInputs = segments;
-
-    return jsonInputs;
-  };
-
-  const countUnknowns = (segmentNumber) => {
-    let knownsCount = 0;
-    let unknownsCount = 0;
-
-    //Determine parameters to reference
-    let params = segments[segmentNumber - 1].parameters;
-
-    params.map((parameter) =>
-      parameter.calculate === true ? (knownsCount += 1) : (unknownsCount += 1)
-    );
-
-    console.log(
-      `There are ${knownsCount} knowns and ${unknownsCount} unknowns`
-    );
-
-    return knownsCount, unknownsCount;
-  };
-
   const toggleChangeInput = (symbol, val, segmentNumber) => {
     //Determine parameters to reference
     let params = segments[segmentNumber - 1].parameters;
     //Copy parameter, change inputs
     let newParameters = params.map((parameter) => {
       if (parameter.symbol === symbol) {
-        return { ...parameter, input: val };
+        //check if value is a number
+
+        if (isNaN(val.trim()) || val.trim().length === 0) {
+          return { ...parameter, input: val };
+        } else {
+          return { ...parameter, input: parseInt(val) };
+        }
       } else {
         return parameter;
       }
@@ -127,6 +109,67 @@ const App = () => {
         } else {
           return { ...parameter, calculate: newCalculate, input: undefined };
         }
+      } else {
+        return parameter;
+      }
+    });
+    //Copy segments, add in new parameters
+    let newSegments = segments.map((seg) => {
+      return { ...seg };
+    });
+    newSegments[segmentNumber - 1].parameters = newParameters;
+
+    return setSegments(newSegments);
+  };
+
+  const toggleUnits = (symbol, segmentNumber) => {
+    //Determine parameters to reference
+    let params = segments[segmentNumber - 1].parameters;
+    //Copy parameter, change units and convert value
+    let newParameters = params.map((parameter) => {
+      if (parameter.symbol === symbol) {
+        if (parameter.symbol === "d") {
+          if (typeof parameter.input === "number") {
+            switch (parameter.units) {
+              case "nominal %/yr":
+                return { ...parameter, units: "secant effective %/yr" };
+              case "secant effective %/yr":
+                return { ...parameter, units: "nominal %/yr" };
+            }
+          } else {
+            switch (parameter.units) {
+              case "nominal %/yr":
+                return { ...parameter, units: "secant effective %/yr" };
+              case "secant effective %/yr":
+                return { ...parameter, units: "nominal %/yr" };
+            }
+          }
+        }
+
+        //symbol == duration
+        if (parameter.symbol === "t") {
+          if (typeof parameter.input === "number") {
+            switch (parameter.units) {
+              case "years":
+                let newDaysInput = parameter.input * 365;
+                console.log("new days", newDaysInput);
+                return { ...parameter, units: "days", input: newDaysInput };
+              case "days":
+                let newYearsInput = parameter.input / 365;
+                return { ...parameter, units: "years", input: newYearsInput };
+            }
+          } else {
+            switch (parameter.units) {
+              case "years":
+                console.log("this one");
+                console.log(typeof parameter.input);
+                return { ...parameter, units: "days" };
+              case "days":
+                return { ...parameter, units: "years" };
+            }
+          }
+        }
+        return parameter;
       } else {
         return parameter;
       }
@@ -180,7 +223,31 @@ const App = () => {
     setSegments(segmentsCopy);
   };
 
-  // Test connecting to back-end
+  const exportParameters = () => {
+    let jsonInputs = segments[0];
+
+    return jsonInputs;
+  };
+
+  console.log(JSON.stringify(exportParameters()));
+
+  const countUnknowns = (segmentNumber) => {
+    let knownsCount = 0;
+    let unknownsCount = 0;
+
+    //Determine parameters to reference
+    let params = segments[segmentNumber - 1].parameters;
+
+    params.map((parameter) =>
+      parameter.calculate === true ? (knownsCount += 1) : (unknownsCount += 1)
+    );
+
+    console.log(
+      `There are ${knownsCount} knowns and ${unknownsCount} unknowns`
+    );
+
+    return knownsCount, unknownsCount;
+  };
 
   const sendJSON = async () => {
     let url = "http://localhost:8000/solve";
@@ -214,6 +281,7 @@ const App = () => {
               changeInput={toggleChangeInput}
               onToggle={toggleCalculate}
               segmentNumber={segments[index].segmentNumber}
+              toggleUnits={toggleUnits}
             />
           </div>
         ))}

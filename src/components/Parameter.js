@@ -8,6 +8,7 @@ export const Parameter = ({
   changeInput,
   clearInput,
   segmentNumber,
+  toggleUnits,
 }) => {
   //function to render input
   const renderInput = () => {
@@ -42,6 +43,15 @@ export const Parameter = ({
       <div className="symbol">{parameter.symbol}</div>
 
       {renderInput()}
+
+      <div
+        className="units"
+        onClick={() => {
+          toggleUnits(parameter.symbol, segmentNumber);
+        }}
+      >
+        {parameter.units}
+      </div>
     </div>
   );
 };

@@ -6,6 +6,7 @@ export const Parameters = ({
   changeInput,
   clearInput,
   segmentNumber,
+  toggleUnits,
 }) => {
   return (
     <>
@@ -17,6 +18,7 @@ export const Parameters = ({
           changeInput={changeInput}
           clearInput={clearInput}
           segmentNumber={segmentNumber}
+          toggleUnits={toggleUnits}
         />
       ))}
     </>

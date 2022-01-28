@@ -79,6 +79,10 @@ body {
   margin: auto;
 }
 
+.units {
+  color: blue;
+  font-size: 10px;
+}
 .symbol {
   display: inline-block;
   height: 30px;
