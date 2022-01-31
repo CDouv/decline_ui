@@ -7,7 +7,10 @@ export const Parameters = ({
   clearInput,
   segmentNumber,
   toggleUnits,
+  countUnknowns,
 }) => {
+  let knownsUnknowns = countUnknowns(segmentNumber);
+
   return (
     <>
       {parameters.map((parameter) => (
@@ -21,6 +24,9 @@ export const Parameters = ({
           toggleUnits={toggleUnits}
         />
       ))}
+      <div className="knownsUnknowns">
+        There are {knownsUnknowns[0]} knowns and {knownsUnknowns[1]} unknowns.
+      </div>
     </>
   );
 };

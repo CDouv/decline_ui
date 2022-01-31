@@ -3,7 +3,7 @@ import React from "react";
 export const DeleteSegment = ({ deleteSegment }) => {
   return (
     <div>
-      <button className="calculateButton" onClick={() => deleteSegment()}>
+      <button className="button" onClick={() => deleteSegment()}>
         Delete Segment
       </button>
     </div>

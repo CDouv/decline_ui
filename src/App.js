@@ -61,13 +61,23 @@ const App = () => {
     },
   ]);
 
+  //Create a state to track whether segment has been checked/approved to go into calculator
+  const [inputCheck, setInputCheck] = useState([false]);
+
   const updateInputs = (arr) => {
-    setSegments(
-      segments.map((parameter, index) => ({
-        ...parameter,
-        input: arr[index],
-      }))
-    );
+    //Copy segments, add in new parameters
+    let newSegments = segments.map((seg) => {
+      return { ...seg };
+    });
+
+    //TODO Come back to this, add looping functionality
+    let newParameters = segments[0].parameters.map((parameter, index) => {
+      return { ...parameter, input: arr[index] };
+    });
+
+    newSegments[0].parameters = newParameters;
+
+    return setSegments(newSegments);
   };
 
   const toggleChangeInput = (symbol, val, segmentNumber) => {
@@ -206,6 +216,13 @@ const App = () => {
     segmentsCopy.push(newSegment);
 
     setSegments(segmentsCopy);
+
+    //add another value to inputsCheck
+    let inputCheckCopy = [...inputCheck];
+
+    inputCheckCopy.push(false);
+
+    setInputCheck(inputCheckCopy);
   };
 
   const deleteSegment = () => {
@@ -214,22 +231,18 @@ const App = () => {
       return { ...seg };
     });
 
+    let inputCheckCopy = [...inputCheck];
+
     if (segmentsCopy.length == 1) {
       return;
     } else {
       segmentsCopy.pop();
+      inputCheckCopy.pop();
     }
 
     setSegments(segmentsCopy);
+    setInputCheck(inputCheckCopy);
   };
-
-  const exportParameters = () => {
-    let jsonInputs = segments[0];
-
-    return jsonInputs;
-  };
-
-  console.log(JSON.stringify(exportParameters()));
 
   const countUnknowns = (segmentNumber) => {
     let knownsCount = 0;
@@ -238,15 +251,29 @@ const App = () => {
     //Determine parameters to reference
     let params = segments[segmentNumber - 1].parameters;
 
-    params.map((parameter) =>
-      parameter.calculate === true ? (knownsCount += 1) : (unknownsCount += 1)
+    params.map((parameter) => {
+      if (
+        parameter.calculate === true &&
+        parameter.input !== undefined &&
+        !isNaN(parameter.input) &&
+        parameter.input != ""
+      ) {
+        knownsCount += 1;
+      } else {
+        unknownsCount += 1;
+      }
+    });
+
+    return [knownsCount, unknownsCount];
+  };
+
+  const exportParameters = () => {
+    let segmentsCopy = segments.filter(
+      (seg) => countUnknowns(seg.segmentNumber)[0] === 3
     );
 
-    console.log(
-      `There are ${knownsCount} knowns and ${unknownsCount} unknowns`
-    );
-
-    return knownsCount, unknownsCount;
+    // let jsonInput = JSON.stringify(segmentsCopy);
+    return segmentsCopy[0];
   };
 
   const sendJSON = async () => {
@@ -275,24 +302,34 @@ const App = () => {
       <Header title="Decline Calculator" />
       <div className="forecast">
         {segments.map((segment, index) => (
-          <div className="segment">
+          <div
+            className={`${
+              countUnknowns(segment.segmentNumber)[0] === 3
+                ? "segment"
+                : "segmentError"
+            }`}
+          >
             <Parameters
+              key={segments[index].segmentNumber}
               parameters={segments[index].parameters}
               changeInput={toggleChangeInput}
               onToggle={toggleCalculate}
               segmentNumber={segments[index].segmentNumber}
               toggleUnits={toggleUnits}
+              countUnknowns={countUnknowns}
             />
           </div>
         ))}
       </div>
-      <AddSegment copySegment={copySegment} />
-      <DeleteSegment deleteSegment={deleteSegment} />
-      <Calculate
-        countUnknowns={countUnknowns}
-        exportParameters={exportParameters}
-        sendJSON={sendJSON}
-      />
+      <div className="buttons">
+        <AddSegment copySegment={copySegment} />
+        <DeleteSegment deleteSegment={deleteSegment} />
+        <Calculate
+          countUnknowns={countUnknowns}
+          exportParameters={exportParameters}
+          sendJSON={sendJSON}
+        />
+      </div>
     </div>
   );
 };

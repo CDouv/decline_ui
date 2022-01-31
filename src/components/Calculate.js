@@ -3,7 +3,7 @@ import React from "react";
 export const Calculate = ({ countUnknowns, exportParameters, sendJSON }) => {
   return (
     <div>
-      <button className="calculateButton" onClick={() => sendJSON()}>
+      <button className="button" onClick={() => sendJSON()}>
         Calculate
       </button>
     </div>

@@ -3,7 +3,7 @@ import React from "react";
 export const AddSegment = ({ copySegment }) => {
   return (
     <div>
-      <button className="calculateButton" onClick={() => copySegment()}>
+      <button className="button" onClick={() => copySegment()}>
         Add Segment
       </button>
     </div>
